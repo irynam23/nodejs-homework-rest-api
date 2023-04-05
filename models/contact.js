@@ -1,4 +1,25 @@
+const { Schema, model } = require("mongoose");
 const Joi = require("joi");
+
+const contactSchema = Schema(
+  {
+    name: {
+      type: String,
+      required: [true, "Set name for contact"],
+    },
+    email: {
+      type: String,
+    },
+    phone: {
+      type: String,
+    },
+    favorite: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  { versionKey: false, timeStamps: true }
+);
 
 const addContactSchema = Joi.object({
   name: Joi.string().min(3).max(30).required(),
@@ -14,9 +35,10 @@ const addContactSchema = Joi.object({
     .messages({
       "string.pattern.base": "{{#label}} must be a valid phone number",
     }),
+  favorite: Joi.bool(),
 });
 
-const editContactSchema = Joi.object({
+const updateContactSchema = Joi.object({
   name: Joi.string().min(3).max(30),
   email: Joi.string().email({
     minDomainSegments: 2,
@@ -27,9 +49,18 @@ const editContactSchema = Joi.object({
     .messages({
       "string.pattern.base": "{{#label}} must be a valid phone number",
     }),
+  favorite: Joi.bool(),
 });
+
+const updateStatusContactSchema = Joi.object({
+  favorite: Joi.bool().required(),
+});
+
+const Contact = model("contact", contactSchema);
 
 module.exports = {
   addContactSchema,
-  editContactSchema,
+  updateContactSchema,
+  updateStatusContactSchema,
+  Contact,
 };
