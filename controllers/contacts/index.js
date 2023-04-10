@@ -10,6 +10,8 @@ const { getById } = require("./getById");
 
 const { updateStatus } = require("./updateStatus");
 
+const { verifyEmail } = require("../users/verifyEmail");
+
 module.exports = {
   add,
   removeById,
@@ -17,4 +19,5 @@ module.exports = {
   getAll,
   getById,
   updateStatus,
+  verifyEmail,
 };
